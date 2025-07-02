@@ -1,1 +1,1 @@
-# quick-pen
+# QuickPen

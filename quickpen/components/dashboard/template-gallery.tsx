@@ -7,7 +7,12 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./ui/carousel";
+} from "../ui/carousel";
+import { useRouter } from "next/navigation";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const templates = [
   { id: "blank", label: "Blank Document", imageUrl: "/blank-document.svg" },
@@ -32,7 +37,22 @@ const templates = [
 ];
 
 export function TemplateGallery() {
-  const isCreating = false;
+  const router = useRouter();
+  const create = useMutation(api.documents.create);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const onTemplateClick = (title: string, initialContent: string) => {
+    setIsCreating(true);
+    create({ title, initialContent })
+      .catch(() => toast.error("Something went wrong"))
+      .then((documentId) => {
+        toast.success("Document created");
+        router.push(`/documents/${documentId}`);
+      })
+      .finally(() => {
+        setIsCreating(false);
+      });
+  };
 
   return (
     <div className="bg-[#f1f3f4]">
@@ -53,7 +73,9 @@ export function TemplateGallery() {
                 >
                   <button
                     disabled={isCreating}
-                    onClick={() => {}}
+                    onClick={() => {
+                      onTemplateClick(template.label, "");
+                    }}
                     style={{
                       backgroundImage: `url(${template.imageUrl})`,
                       backgroundSize: "cover",

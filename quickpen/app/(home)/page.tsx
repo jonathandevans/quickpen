@@ -1,13 +1,19 @@
 "use client";
 
-import { Navbar } from "@/components/navbar";
-import { TemplateGallery } from "@/components/template-gallery";
+import { DocumentsTable } from "@/components/dashboard/documents-table";
+import { Navbar } from "@/components/dashboard/navbar";
+import { TemplateGallery } from "@/components/dashboard/template-gallery";
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useSearchParam } from "@/lib/use-search-param";
+import { usePaginatedQuery } from "convex/react";
 
 export default function HomeRoute() {
-  const documents = useQuery(api.documents.get);
-  if (documents === undefined) return <p>Loading...</p>;
+  const [search] = useSearchParam();
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.documents.get,
+    { search },
+    { initialNumItems: 5 }
+  );
 
   return (
     <main className="min-h-screen flex flex-col">
@@ -17,7 +23,11 @@ export default function HomeRoute() {
 
       <div className="mt-16">
         <TemplateGallery />
-        {documents?.map((doc) => <span key={doc._id}>{doc.title}</span>)}
+        <DocumentsTable
+          documents={results}
+          loadMore={loadMore}
+          status={status}
+        />
       </div>
     </main>
   );

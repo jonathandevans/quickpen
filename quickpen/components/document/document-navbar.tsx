@@ -36,6 +36,7 @@ import {
   Undo2,
 } from "lucide-react";
 import { useEditorStore } from "@/lib/use-editor-store";
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 
 export function DocumentNavbar() {
   const { editor } = useEditorStore();
@@ -278,6 +279,16 @@ export function DocumentNavbar() {
             </Menubar>
           </div>
         </div>
+      </div>
+
+      <div className="flex gap-3 items-center">
+        <OrganizationSwitcher
+          afterCreateOrganizationUrl="/"
+          afterLeaveOrganizationUrl="/"
+          afterSelectOrganizationUrl="/"
+          afterSelectPersonalUrl="/"
+        />
+        <UserButton />
       </div>
     </nav>
   );

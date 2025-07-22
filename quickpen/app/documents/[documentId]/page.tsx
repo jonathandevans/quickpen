@@ -1,6 +1,7 @@
 import { DocumentEditor } from "@/components/document/document-editor";
 import { DocumentNavbar } from "@/components/document/document-navbar";
 import { DocumentToolbar } from "@/components/document/document-toolbar";
+import { Room } from "@/components/document/room";
 
 export default async function DocumentIdRoute({
   params,
@@ -17,7 +18,9 @@ export default async function DocumentIdRoute({
       </div>
 
       <div className="pt-[114px] print:pt-0">
-        <DocumentEditor />
+        <Room>
+          <DocumentEditor />
+        </Room>
       </div>
     </main>
   );

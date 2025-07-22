@@ -612,8 +612,8 @@ export function DocumentToolbar() {
       {
         label: "Comment",
         icon: MessageSquarePlus,
-        onClick: () => console.log("comment"),
-        isActive: false,
+        onClick: () => editor?.chain().focus().addPendingComment().run(),
+        isActive: editor?.isActive("liveblocksCommentMark"),
       },
       {
         label: "List Todo",
